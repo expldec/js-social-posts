@@ -58,7 +58,7 @@ const posts = [
 
 
 const postContainer = document.getElementById('container');
-const likedPosts = [];
+let likedPosts = [];
 posts.forEach(post => {
     postContainer.append(buildPost(post));
 })
@@ -111,13 +111,17 @@ function buildPost(object) {
 
 function clickedLike(event) {
     event.preventDefault();
-    console.log(this.dataset.postid);
-    thisPostID = this.dataset.postid;
-    this.classList.add('like-button--liked');
+    const thisPostID = parseInt(this.dataset.postid);
+    const thisLikeCounter = document.getElementById(`like-counter-${thisPostID}`);
     if (!likedPosts.includes(thisPostID)) {
+        this.classList.add('like-button--liked');
         likedPosts.push(thisPostID);
-        const thisLikeCounter = document.getElementById(`like-counter-${thisPostID}`);
         thisLikeCounter.textContent = parseInt(thisLikeCounter.textContent) + 1;
+    } else {
+        this.classList.remove('like-button--liked');
+        console.log(thisPostID);
+        likedPosts = likedPosts.filter(elem => elem !== thisPostID);
+        thisLikeCounter.textContent = parseInt(thisLikeCounter.textContent) - 1;
     }
-    return false;
+    console.log(likedPosts);
 }
