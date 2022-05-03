@@ -13,9 +13,8 @@ const posts = [
     {
         "id": 2,
         "content": "Repellat porro ut fugiat repudiandae? Ea debitis cumque, quibusdam dolores voluptate mollitia.",
-        "media": "https://unsplash.it/600/300?image=172",
         "author": {
-            "name": "Johnny Ubriacone"
+            "name": "Johnny Felice Ubriacone"
         },
         "likes": 48,
         "created": "2021-06-24"
@@ -55,8 +54,6 @@ const posts = [
     },
     
 ];
-
-
 const postContainer = document.getElementById('container');
 let likedPosts = [];
 posts.forEach(post => {
@@ -71,7 +68,7 @@ function buildPost(object) {
     postHeader.classList.add('post__header');
     postHeader.innerHTML = `<div class="post-meta">                    
                                 <div class="post-meta__icon">
-                                    <img class="profile-pic" src="${object.author.image}" alt="${object.author.name}">                    
+                                                     
                                 </div>
                                 <div class="post-meta__data">
                                     <div class="post-meta__author">${object.author.name}</div>
@@ -79,13 +76,30 @@ function buildPost(object) {
                                 </div>                    
                             </div>`
 
+    postMetaIcon = postHeader.querySelector('.post-meta__icon');
+    if (object.author.image) {
+        postMetaIcon.innerHTML = `<img class="profile-pic" src="${object.author.image}" alt="${object.author.name}">`
+    } else {
+        let authorSplitName = object.author.name.split(' ');
+        let authorInitials = authorSplitName[0][0] + authorSplitName[authorSplitName.length -1][0];
+        postMetaIcon.innerHTML = `<div class="profile-pic-default">
+                                        <span">${authorInitials}</span>
+                                    </div>`
+    }
+    post.append(postHeader);
+
     const postText = document.createElement('div');
     postText.classList.add('post__text');
     postText.textContent = object.content;
+    post.append(postText);
 
-    const postImage = document.createElement('div');
-    postImage.classList.add('post__image');
-    postImage.innerHTML = `<img src="${object.media}" alt="">`
+    if (object.media) {
+        const postImage = document.createElement('div');
+        postImage.classList.add('post__image');
+        postImage.innerHTML = `<img src="${object.media}" alt="">`;
+        post.append(postImage);
+    }
+    
 
     const postFooter = document.createElement('div');
     postFooter.classList.add('post__footer');
@@ -102,7 +116,7 @@ function buildPost(object) {
                             </div>`;
     postFooter.querySelector('.like-button').addEventListener('click', clickedLike)
 
-    post.append(postHeader, postText, postImage, postFooter)
+    post.append(postFooter);
 
     console.log(post);
     return post;
