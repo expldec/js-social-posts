@@ -58,7 +58,7 @@ const posts = [
 
 
 const postContainer = document.getElementById('container');
-
+const likedPosts = [];
 posts.forEach(post => {
     postContainer.append(buildPost(post));
 })
@@ -97,12 +97,27 @@ function buildPost(object) {
                                     </a>
                                 </div>
                                 <div class="likes__counter">
-                                    Piace a <b id="like-counter-1" class="js-likes-counter">${object.likes}</b> persone
+                                    Piace a <b id="like-counter-${object.id}" class="js-likes-counter">${object.likes}</b> persone
                                 </div>
-                            </div>`
+                            </div>`;
+    postFooter.querySelector('.like-button').addEventListener('click', clickedLike)
 
     post.append(postHeader, postText, postImage, postFooter)
 
     console.log(post);
     return post;
+}
+
+
+function clickedLike(event) {
+    event.preventDefault();
+    console.log(this.dataset.postid);
+    thisPostID = this.dataset.postid;
+    this.classList.add('like-button--liked');
+    if (!likedPosts.includes(thisPostID)) {
+        likedPosts.push(thisPostID);
+        const thisLikeCounter = document.getElementById(`like-counter-${thisPostID}`);
+        thisLikeCounter.textContent = parseInt(thisLikeCounter.textContent) + 1;
+    }
+    return false;
 }
