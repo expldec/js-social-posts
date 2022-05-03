@@ -72,7 +72,7 @@ function buildPost(object) {
                                 </div>
                                 <div class="post-meta__data">
                                     <div class="post-meta__author">${object.author.name}</div>
-                                    <div class="post-meta__time">4 mesi fa</div>
+                                    <div class="post-meta__time">${object.created}</div>
                                 </div>                    
                             </div>`
 
